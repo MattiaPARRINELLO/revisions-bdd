@@ -152,45 +152,42 @@ body{font-family:'Inter',sans-serif;background:#0a0c14;color:#e2e8f0;padding:0;m
 
 <script>
 const EXERCISES = [
-  // STYLE DE CODE (01-15)
-  {id:1, section:'style', title:'Nommage', desc:'Variables, fonctions, constantes en snake_case'},
-  {id:2, section:'style', title:'Espacement', desc:'Opérateurs, virgules, parenthèses'},
-  {id:3, section:'style', title:'Sections dans les fonctions', desc:'docstring, corps, return'},
-  {id:4, section:'style', title:'Classes', desc:'Nommage PascalCase, méthode, constructeur'},
-  {id:5, section:'style', title:'Imports', desc:'Ordre : builtins, tiers, locales'},
-  {id:6, section:'style', title:'Structure des fichiers', desc:'Organisation d\'un .py complet'},
-  {id:7, section:'style', title:'Principes', desc:'DRY, KISS, lisibilité'},
-  {id:8, section:'style', title:'Correction de code', desc:'Trouver et corriger les erreurs de style'},
-  {id:9, section:'style', title:'Écrire des fonctions', desc:'Clean functions avec docstrings'},
-  {id:10, section:'style', title:'Menu complet', desc:'Menu avec dictionnaire et lambda'},
-  {id:11, section:'style', title:'Stack avec classe', desc:'Pile LIFO en POO'},
-  {id:12, section:'style', title:'Boucle while saisie', desc:'Validation de saisie utilisateur'},
-  {id:13, section:'style', title:'Lire du code', desc:'Comprendre et analyser du code existant'},
-  {id:14, section:'style', title:'Refactoring', desc:'Nettoyer et améliorer du code'},
-  {id:15, section:'style', title:'Exercice libre', desc:'Tout ce qu\'on a vu, sans filet'},
-
-  // BDD (16-30)
-  {id:16, section:'bdd', title:'Connexion', desc:'Connecter Python à MongoDB'},
-  {id:17, section:'bdd', title:'Insert', desc:'insert_one, insert_many'},
-  {id:18, section:'bdd', title:'Find One', desc:'find_one avec filtres'},
-  {id:19, section:'bdd', title:'Find', desc:'find, boucle sur curseur'},
-  {id:20, section:'bdd', title:'Update', desc:'update_one, update_many, $set'},
-  {id:21, section:'bdd', title:'Delete', desc:'delete_one, delete_many'},
-  {id:22, section:'bdd', title:'Sort & Limit', desc:'Trier et limiter les résultats'},
-  {id:23, section:'bdd', title:'Opérateurs', desc:'$gt, $lt, $in, $regex'},
-  {id:24, section:'bdd', title:'Projection', desc:'Choisir les champs retournés'},
-  {id:25, section:'bdd', title:'Mini-app complète', desc:'CRUD complet dans un menu'},
-  {id:26, section:'bdd', title:'Lire du code', desc:'Comprendre un script MongoDB'},
-  {id:27, section:'bdd', title:'Student manager', desc:'Gérer des étudiants en BDD'},
-  {id:28, section:'bdd', title:'Blog', desc:'Posts, commentaires, likes'},
-  {id:29, section:'bdd', title:'Music player', desc:'Playlist, chansons, lecture'},
-  {id:30, section:'bdd', title:'Bilan', desc:'Exercice récapitulatif complet'},
+  {id:1,  file:'nommage',           section:'style', title:'Nommage',                desc:'Variables, fonctions, constantes en snake_case'},
+  {id:2,  file:'espacement',        section:'style', title:'Espacement',             desc:'Opérateurs, virgules, parenthèses'},
+  {id:3,  file:'sections',          section:'style', title:'Sections dans une fonction', desc:'docstring, corps, return'},
+  {id:4,  file:'classes',           section:'style', title:'Classes',                desc:'Nommage PascalCase, méthode, constructeur'},
+  {id:5,  file:'imports',           section:'style', title:'Imports',                desc:'Ordre : builtins, tiers, locales'},
+  {id:6,  file:'structure-fichiers',section:'style', title:'Structure des fichiers', desc:'Organisation d\'un .py complet'},
+  {id:7,  file:'principes',         section:'style', title:'Principes',              desc:'DRY, KISS, lisibilité'},
+  {id:8,  file:'correction-code',   section:'style', title:'Correction de code',     desc:'Trouver et corriger les erreurs de style'},
+  {id:9,  file:'ecrire-fonctions',  section:'style', title:'Écrire des fonctions',   desc:'Clean functions avec docstrings'},
+  {id:10, file:'menu-complet',      section:'style', title:'Menu complet',           desc:'Menu avec dictionnaire et lambda'},
+  {id:11, file:'stack',             section:'style', title:'Stack avec classe',      desc:'Pile LIFO en POO'},
+  {id:12, file:'while-saisie',      section:'style', title:'Boucle while saisie',    desc:'Validation de saisie utilisateur'},
+  {id:13, file:'lire-code',         section:'style', title:'Lire du code',           desc:'Comprendre et analyser du code existant'},
+  {id:14, file:'refactoring',       section:'style', title:'Refactoring',            desc:'Nettoyer et améliorer du code'},
+  {id:15, file:'exercice-libre',    section:'style', title:'Exercice libre',         desc:'Tout ce qu\'on a vu, sans filet'},
+  {id:16, file:'connexion',         section:'bdd',   title:'Connexion',              desc:'Connecter Python à MongoDB'},
+  {id:17, file:'insert',            section:'bdd',   title:'Insert',                 desc:'insert_one, insert_many'},
+  {id:18, file:'find-one',          section:'bdd',   title:'Find One',               desc:'find_one avec filtres'},
+  {id:19, file:'find',              section:'bdd',   title:'Find',                   desc:'find, boucle sur curseur'},
+  {id:20, file:'update',            section:'bdd',   title:'Update',                 desc:'update_one, update_many, $set'},
+  {id:21, file:'delete',            section:'bdd',   title:'Delete',                 desc:'delete_one, delete_many'},
+  {id:22, file:'sort-limit',        section:'bdd',   title:'Sort & Limit',           desc:'Trier et limiter les résultats'},
+  {id:23, file:'operateurs',        section:'bdd',   title:'Opérateurs',             desc:'$gt, $lt, $in, $regex'},
+  {id:24, file:'projection',        section:'bdd',   title:'Projection',             desc:'Choisir les champs retournés'},
+  {id:25, file:'fonctions-completes',section:'bdd',  title:'Fonctions BDD complètes',desc:'CRUD complet dans un menu'},
+  {id:26, file:'lire-code',         section:'bdd',   title:'Lire du code',           desc:'Comprendre un script MongoDB'},
+  {id:27, file:'etudiants',         section:'bdd',   title:'Gestion étudiants',      desc:'Gérer des étudiants en BDD'},
+  {id:28, file:'blog',              section:'bdd',   title:'Blog',                   desc:'Posts, commentaires, likes'},
+  {id:29, file:'resume',            section:'bdd',   title:'Résumé de textes',       desc:'Playlist, chansons, lecture'},
+  {id:30, file:'bilan',             section:'bdd',   title:'Bilan',                  desc:'Exercice récapitulatif complet'},
 ]
 
 function zero(n){return String(n).padStart(2,'0')}
 
-function exLink(n){const e=EXERCISES[n-1];return `exercices/${zero(n)}-${e.section}-${e.title.toLowerCase().replace(/\s+/g,'-')}.html`}
-function corrLink(n){const e=EXERCISES[n-1];return `exercices/corrections/${zero(n)}-${e.section}-${e.title.toLowerCase().replace(/\s+/g,'-')}.html`}
+function exLink(n){const e=EXERCISES[n-1];return `exercices/${zero(n)}-${e.section}-${e.file}.html`}
+function corrLink(n){const e=EXERCISES[n-1];return `exercices/corrections/${zero(n)}-${e.section}-${e.file}.html`}
 
 function getDone(){try{return JSON.parse(localStorage.getItem('revisionsDone')||'{}')}catch(e){return{}}}
 function setDone(id,val){const d=getDone();if(val)d[id]=true;else delete d[id];localStorage.setItem('revisionsDone',JSON.stringify(d));render()}
