@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correction Exercice 2 — Espacement</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0f1117;color:#e2e8f0;padding:20px;line-height:1.6}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:22px;font-weight:800;color:#f1f5f9;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #2d3748}
+h2{font-size:15px;font-weight:700;color:#34d399;margin:20px 0 10px}
+h3{font-size:13px;font-weight:600;color:#60a5fa;margin:16px 0 8px}
+p{font-size:13px;color:#cbd5e1;margin:8px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+th,td{padding:6px 10px;text-align:left;border:1px solid #2d3748}
+th{background:#1e293b;font-weight:600;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td{color:#cbd5e1}
+tr:nth-child(even) td{background:#161928}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#1a1d2e;padding:1px 5px;border-radius:4px;color:#98c379}
+pre{background:#0d1117;border:1px solid #252d3d;border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;overflow-x:auto;margin:10px 0}
+pre code{background:0;padding:0;border-radius:0}
+hr{border:0;border-top:1px solid #2d3748;margin:20px 0}
+ul,ol{margin:8px 0;padding-left:20px;font-size:13px;color:#cbd5e1}
+li{margin:4px 0}
+strong{color:#f1f5f9}
+em{color:#94a3b8}
+blockquote{border-left:3px solid #34d399;padding:8px 12px;margin:10px 0;background:#1a1d2e;border-radius:0 8px 8px 0;font-size:13px;color:#94a3b8}
+a{color:#60a5fa;text-decoration:none}
+.breadcrumb{font-size:11px;color:#64748b;margin-bottom:16px}
+.breadcrumb a{color:#64748b}
+.breadcrumb a:hover{color:#60a5fa}
+@media(max-width:600px){body{padding:12px}h1{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="breadcrumb"><a href="../index.html">← Retour</a></div>
+<h1>Correction Exercice 2 — Espacement</h1>
+<h2>Partie A</h2>
+<pre><code class="language-python">def add_player(db, username):
+    players = get_collection(db, &quot;players&quot;)
+    players.insert_one({&quot;username&quot;: username, &quot;score&quot;: 0})
+    return username
+
+
+def find_player(db, username):
+    players = get_collection(db, &quot;players&quot;)
+    player = players.find_one({&quot;username&quot;: username})
+
+    if player is None:
+        print(&quot;Joueur non trouvé&quot;)
+        return None
+
+    return player
+
+
+def delete_player(db, username):
+    players = get_collection(db, &quot;players&quot;)
+    players.delete_one({&quot;username&quot;: username})
+</code></pre>
+<ul>
+<li>2 lignes vides entre <code>add_player</code> et <code>find_player</code></li>
+<li>2 lignes vides entre <code>find_player</code> et <code>delete_player</code></li>
+<li>1 ligne vide dans <code>find_player</code> pour séparer la vérification</li>
+</ul>
+<h2>Partie B</h2>
+<pre><code class="language-python">a = 5+3          # ❌ → a = 5 + 3
+b = 10 - 2       # ✅
+c = 3*4          # ❌ → c = 3 * 4
+d = 20/5         # ❌ → d = 20 / 5
+e = a &lt; 10       # ✅
+f = b&gt;=c         # ❌ → f = b &gt;= c
+</code></pre>
+</div>
+</body>
+</html>

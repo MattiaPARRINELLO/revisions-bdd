@@ -189,8 +189,8 @@ const EXERCISES = [
 
 function zero(n){return String(n).padStart(2,'0')}
 
-function exLink(n){return `exercices/${zero(n)}-${EXERCISES[n-1].title.toLowerCase().replace(/\s+/g,'-')}.md`}
-function corrLink(n){return `exercices/corrections/${zero(n)}-${EXERCISES[n-1].title.toLowerCase().replace(/\s+/g,'-')}.md`}
+function exLink(n){return `exercices/${zero(n)}-${EXERCISES[n-1].title.toLowerCase().replace(/\s+/g,'-')}.html`}
+function corrLink(n){return `exercices/corrections/${zero(n)}-${EXERCISES[n-1].title.toLowerCase().replace(/\s+/g,'-')}.html`}
 
 function getDone(){try{return JSON.parse(localStorage.getItem('revisionsDone')||'{}')}catch(e){return{}}}
 function setDone(id,val){const d=getDone();if(val)d[id]=true;else delete d[id];localStorage.setItem('revisionsDone',JSON.stringify(d));render()}

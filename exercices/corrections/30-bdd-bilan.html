@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correction Exercice 30 — Bilan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0f1117;color:#e2e8f0;padding:20px;line-height:1.6}
+.container{max-width:800px;margin:0 auto}
+h1{font-size:22px;font-weight:800;color:#f1f5f9;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #2d3748}
+h2{font-size:15px;font-weight:700;color:#34d399;margin:20px 0 10px}
+h3{font-size:13px;font-weight:600;color:#60a5fa;margin:16px 0 8px}
+p{font-size:13px;color:#cbd5e1;margin:8px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+th,td{padding:6px 10px;text-align:left;border:1px solid #2d3748}
+th{background:#1e293b;font-weight:600;color:#94a3b8;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+td{color:#cbd5e1}
+tr:nth-child(even) td{background:#161928}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#1a1d2e;padding:1px 5px;border-radius:4px;color:#98c379}
+pre{background:#0d1117;border:1px solid #252d3d;border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;overflow-x:auto;margin:10px 0}
+pre code{background:0;padding:0;border-radius:0}
+hr{border:0;border-top:1px solid #2d3748;margin:20px 0}
+ul,ol{margin:8px 0;padding-left:20px;font-size:13px;color:#cbd5e1}
+li{margin:4px 0}
+strong{color:#f1f5f9}
+em{color:#94a3b8}
+blockquote{border-left:3px solid #34d399;padding:8px 12px;margin:10px 0;background:#1a1d2e;border-radius:0 8px 8px 0;font-size:13px;color:#94a3b8}
+a{color:#60a5fa;text-decoration:none}
+.breadcrumb{font-size:11px;color:#64748b;margin-bottom:16px}
+.breadcrumb a{color:#64748b}
+.breadcrumb a:hover{color:#60a5fa}
+@media(max-width:600px){body{padding:12px}h1{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="breadcrumb"><a href="../index.html">← Retour</a></div>
+<h1>Correction Exercice 30 — Bilan</h1>
+<p>Voici une correction complète du gestionnaire de musique :</p>
+<pre><code class="language-python">from pymongo import MongoClient
+
+
+&quot;&quot;&quot;Base de données&quot;&quot;&quot;
+
+def open_db():
+    client = MongoClient(&quot;mongodb://localhost:27017/&quot;)
+    return client[&quot;music&quot;]
+
+
+def get_collection(db, name):
+    return db[name]
+
+
+&quot;&quot;&quot;Gestion des chansons&quot;&quot;&quot;
+
+def add_song(db, title, artist, album, year, duration):
+    songs = get_collection(db, &quot;songs&quot;)
+    songs.insert_one({
+        &quot;title&quot;: title,
+        &quot;artist&quot;: artist,
+        &quot;album&quot;: album,
+        &quot;year&quot;: year,
+        &quot;duration&quot;: duration,
+        &quot;plays&quot;: 0
+    })
+    print(f&quot;Chanson '{title}' ajoutée&quot;)
+
+
+def search_song(db, title):
+    songs = get_collection(db, &quot;songs&quot;)
+    song = songs.find_one({&quot;title&quot;: title})
+
+    if song is None:
+        print(&quot;Chanson inconnue&quot;)
+        return None
+
+    print(f&quot;{song['title']} / {song['artist']} / {song['album']} ({song['year']})&quot;)
+    print(f&quot;Durée: {song['duration']}s / Écoutes: {song['plays']}&quot;)
+    return song
+
+
+def get_by_artist(db, artist):
+    songs = get_collection(db, &quot;songs&quot;)
+    results = list(songs.find({&quot;artist&quot;: artist}))
+
+    if len(results) == 0:
+        print(f&quot;Aucune chanson de {artist}&quot;)
+        return
+
+    for song in results:
+        print(f&quot;{song['title']} / {song['album']} / {song['plays']} écoutes&quot;)
+
+
+def play_song(db, title):
+    songs = get_collection(db, &quot;songs&quot;)
+    songs.update_one(
+        {&quot;title&quot;: title},
+        {&quot;$inc&quot;: {&quot;plays&quot;: 1}}
+    )
+    print(f&quot;♪ {title} jouée&quot;)
+
+
+def get_top_played(db, n):
+    songs = get_collection(db, &quot;songs&quot;)
+    top = list(songs.find()
+               .sort(&quot;plays&quot;, -1)
+               .limit(n))
+
+    if len(top) == 0:
+        print(&quot;Aucune chanson&quot;)
+        return
+
+    for i, song in enumerate(top, 1):
+        print(f&quot;{i}. {song['title']} - {song['artist']} ({song['plays']} écoutes)&quot;)
+
+
+def delete_song(db, title):
+    songs = get_collection(db, &quot;songs&quot;)
+    result = songs.delete_one({&quot;title&quot;: title})
+
+    if result.deleted_count &gt; 0:
+        print(f&quot;Chanson '{title}' supprimée&quot;)
+    else:
+        print(f&quot;Chanson '{title}' introuvable&quot;)
+
+
+&quot;&quot;&quot;Menu principal&quot;&quot;&quot;
+
+def main():
+    db = open_db()
+
+    choices = {
+        &quot;1&quot;: lambda d: add_song(d,
+            input(&quot;Titre: &quot;),
+            input(&quot;Artiste: &quot;),
+            input(&quot;Album: &quot;),
+            int(input(&quot;Année: &quot;)),
+            int(input(&quot;Durée (s): &quot;))
+        ),
+        &quot;2&quot;: lambda d: search_song(d, input(&quot;Titre: &quot;)),
+        &quot;3&quot;: lambda d: get_by_artist(d, input(&quot;Artiste: &quot;)),
+        &quot;4&quot;: lambda d: play_song(d, input(&quot;Titre: &quot;)),
+        &quot;5&quot;: lambda d: get_top_played(d, int(input(&quot;Combien: &quot;))),
+        &quot;6&quot;: lambda d: delete_song(d, input(&quot;Titre: &quot;)),
+        &quot;7&quot;: lambda _: exit(),
+    }
+
+    while True:
+        print(&quot;\n1. Ajouter&quot;)
+        print(&quot;2. Chercher&quot;)
+        print(&quot;3. Par artiste&quot;)
+        print(&quot;4. Jouer&quot;)
+        print(&quot;5. Top écoutes&quot;)
+        print(&quot;6. Supprimer&quot;)
+        print(&quot;7. Quitter&quot;)
+        choice = input(&quot;Votre choix: &quot;)
+
+        if choice in choices:
+            choices[choice](db)
+        else:
+            print(&quot;Choix invalide&quot;)
+
+
+main()
+</code></pre>
+</div>
+</body>
+</html>
