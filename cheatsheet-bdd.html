@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDD MongoDB — Cheatsheet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0f1117;color:#e2e8f0;padding:20px}
+.container{max-width:1100px;margin:0 auto}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #2d3748;border-radius:12px;margin-bottom:14px}
+.header h1{font-size:22px;font-weight:800;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header span{font-size:11px;color:#64748b}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#1a1d2e;border:1px solid #2d3748;border-radius:12px;padding:14px 16px}
+.card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #2d3748;display:flex;align-items:center;gap:8px}
+.card-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+.card.c1 .card-title{color:#34d399}.card.c1 .card-title .dot{background:#34d399}.card.c1{border-left:3px solid #34d399}
+.card.c2 .card-title{color:#60a5fa}.card.c2 .card-title .dot{background:#60a5fa}.card.c2{border-left:3px solid #60a5fa}
+.card.c3 .card-title{color:#fbbf24}.card.c3 .card-title .dot{background:#fbbf24}.card.c3{border-left:3px solid #fbbf24}
+.card.c4 .card-title{color:#f472b6}.card.c4 .card-title .dot{background:#f472b6}.card.c4{border-left:3px solid #f472b6}
+.card.c5 .card-title{color:#a78bfa}.card.c5 .card-title .dot{background:#a78bfa}.card.c5{border-left:3px solid #a78bfa}
+.card.c6 .card-title{color:#fb923c}.card.c6 .card-title .dot{background:#fb923c}.card.c6{border-left:3px solid #fb923c}
+
+table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
+th,td{padding:5px 10px;text-align:left;border:1px solid #2d3748}
+th{background:#1e293b;font-weight:600;color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+td{color:#cbd5e1}td code{font-size:11px;color:#98c379}tr:nth-child(even) td{background:#161928}
+pre{background:#0d1117;border:1px solid #252d3d;border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;overflow-x:auto;margin:6px 0}
+.cmt{color:#5a6577;font-style:italic}.kw{color:#c678dd}.fn{color:#61afef}.str{color:#98c379}.num{color:#d19a66}.var{color:#e06c75}.builtin{color:#56b6c2}.op{color:#abb2bf}
+p{font-size:11px;color:#94a3b8;margin:4px 0;line-height:1.5}
+.badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.badge-green{background:#065f4622;color:#34d399;border:1px solid #34d39944}
+.badge-blue{background:#1e3a5f22;color:#60a5fa;border:1px solid #60a5fa44}
+.badge-yellow{background:#5c4a1a33;color:#fbbf24;border:1px solid #fbbf2433}
+.full-width{grid-column:1/-1}
+@media(max-width:750px){.grid{grid-template-columns:1fr}body{padding:12px}}
+@media print{body{background:#0f1117;padding:0}.header,.card{break-inside:avoid}@page{margin:10mm}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>MONGODB + PYMONGO — CHEATSHEET</h1><span>Projet IHM • Base de données • 2026</span></div>
+<div class="grid">
+
+<div class="card c1">
+<div class="card-title"><span class="dot"></span>Connexion &amp; Collections</div>
+<pre><span class="kw">from</span> pymongo <span class="kw">import</span> MongoClient
+
+<span class="cmt"># Connexion</span>
+client = MongoClient(<span class="str">"mongodb://localhost:27017/"</span>)
+db = client[<span class="str">"Game"</span>]
+
+<span class="cmt"># Accéder à une collection</span>
+collection = db[<span class="str">"players"</span>]</pre>
+
+<table><tr><th>Opération</th><th>Code</th></tr>
+<tr><td>Connexion</td><td><code>MongoClient("mongodb://localhost:27017/")</code></td></tr>
+<tr><td>Choisir une base</td><td><code>client["nom_base"]</code></td></tr>
+<tr><td>Choisir une collection</td><td><code>db["nom_collection"]</code></td></tr>
+</table>
+</div>
+
+<div class="card c2">
+<div class="card-title"><span class="dot"></span>Insérer (Create)</div>
+<pre><span class="cmt"># Insérer un document</span>
+db[<span class="str">"players"</span>].insert_one({
+    <span class="str">"username"</span>: <span class="str">"mattia"</span>,
+    <span class="str">"score"</span>: <span class="num">0</span>,
+    <span class="str">"monney"</span>: <span class="num">100</span>
+})
+
+<span class="cmt"># Insérer plusieurs</span>
+db[<span class="str">"players"</span>].insert_many([
+    {<span class="str">"username"</span>: <span class="str">"alice"</span>, <span class="str">"score"</span>: <span class="num">50</span>},
+    {<span class="str">"username"</span>: <span class="str">"bob"</span>, <span class="str">"score"</span>: <span class="num">30</span>},
+])</pre>
+</div>
+
+<div class="card c3">
+<div class="card-title"><span class="dot"></span>Lire (Read)</div>
+<pre><span class="cmt"># Trouver un seul document</span>
+player = db[<span class="str">"players"</span>].find_one(
+    {<span class="str">"username"</span>: <span class="str">"mattia"</span>}
+)
+<span class="cmt"># Retourne un dict ou None</span>
+
+<span class="cmt"># Trouver plusieurs documents</span>
+all_players = <span class="builtin">list</span>(db[<span class="str">"players"</span>].find())
+
+<span class="cmt"># Avec projection (choisir les champs)</span>
+players = <span class="builtin">list</span>(db[<span class="str">"players"</span>].find(
+    {},                             <span class="cmt"># filtre vide = tous</span>
+    {<span class="str">"_id"</span>: <span class="num">0</span>, <span class="str">"username"</span>: <span class="num">1</span>, <span class="str">"score"</span>: <span class="num">1</span>}  <span class="cmt"># 1 = inclure, 0 = exclure</span>
+))</pre>
+</div>
+
+<div class="card c4">
+<div class="card-title"><span class="dot"></span>Mettre à jour (Update)</div>
+<pre><span class="cmt"># Incrémenter une valeur</span>
+db[<span class="str">"players"</span>].update_one(
+    {<span class="str">"username"</span>: <span class="str">"mattia"</span>},
+    {<span class="str">"$inc"</span>: {<span class="str">"monney"</span>: <span class="num">50</span>}}
+)
+
+<span class="cmt"># Modifier un champ</span>
+db[<span class="str">"players"</span>].update_one(
+    {<span class="str">"username"</span>: <span class="str">"mattia"</span>},
+    {<span class="str">"$set"</span>: {<span class="str">"level"</span>: <span class="num">5</span>}}
+)</pre>
+<table><tr><th>Opérateur</th><th>Effet</th></tr>
+<tr><td><code>$inc</code></td><td>Ajoute une valeur numérique</td></tr>
+<tr><td><code>$set</code></td><td>Modifie/ajoute un champ</td></tr>
+<tr><td><code>$push</code></td><td>Ajoute à un tableau</td></tr>
+</table>
+</div>
+
+<div class="card c5">
+<div class="card-title"><span class="dot"></span>Supprimer (Delete)</div>
+<pre><span class="cmt"># Supprimer un document</span>
+db[<span class="str">"players"</span>].delete_one(
+    {<span class="str">"username"</span>: <span class="str">"mattia"</span>}
+)
+
+<span class="cmt"># Supprimer plusieurs</span>
+db[<span class="str">"players"</span>].delete_many(
+    {<span class="str">"score"</span>: {<span class="str">"$lt"</span>: <span class="num">10</span>}}  <span class="cmt"># score &lt; 10</span>
+)</pre>
+<p><span class="badge badge-yellow">delete_many({})</span> supprime TOUT</p>
+</div>
+
+<div class="card c6">
+<div class="card-title"><span class="dot"></span>Trier, Limiter, Compter</div>
+<pre><span class="cmt"># Trier (1 = croissant, -1 = décroissant)</span>
+top = <span class="builtin">list</span>(db[<span class="str">"players"</span>].find()
+    .sort(<span class="str">"score"</span>, -<span class="num">1</span>)
+    .limit(<span class="num">3</span>))
+
+<span class="cmt"># Compter</span>
+count = db[<span class="str">"players"</span>].count_documents({})</pre>
+</div>
+
+<div class="card c1 full-width">
+<div class="card-title"><span class="dot"></span>Structure type d'un fichier Python avec BDD</div>
+<pre><span class="kw">from</span> pymongo <span class="kw">import</span> MongoClient
+
+
+<span class="cmt">"""Base de données"""</span>
+
+<span class="kw">def</span> <span class="fn">open_db</span>():
+    client = MongoClient(<span class="str">"mongodb://localhost:27017/"</span>)
+    <span class="kw">return</span> client[<span class="str">"Game"</span>]
+
+
+<span class="kw">def</span> <span class="fn">get_collection</span>(db, name):
+    <span class="kw">return</span> db[name]
+
+
+<span class="cmt">"""Recherche"""</span>
+
+<span class="kw">def</span> <span class="fn">get_player</span>(db, username):
+    players = get_collection(db, <span class="str">"players"</span>)
+    <span class="kw">return</span> players.find_one({<span class="str">"username"</span>: username})</pre>
+</div>
+
+<div class="card c2 full-width">
+<div class="card-title"><span class="dot"></span>Rappel : Document = Dictionnaire Python</div>
+<pre>{
+    <span class="str">"username"</span>: <span class="str">"mattia"</span>,     <span class="cmt"># string</span>
+    <span class="str">"score"</span>: <span class="num">150</span>,              <span class="cmt"># int</span>
+    <span class="str">"monney"</span>: <span class="num">75</span>,              <span class="cmt"># int</span>
+    <span class="str">"items"</span>: [<span class="str">"sword"</span>, <span class="str">"shield"</span>],  <span class="cmt"># list</span>
+    <span class="str">"is_active"</span>: <span class="var">True</span>          <span class="cmt"># bool</span>
+}
+
+<span class="cmt"># Accès aux valeurs</span>
+player = db[<span class="str">"players"</span>].find_one({<span class="str">"username"</span>: <span class="str">"mattia"</span>})
+print(player[<span class="str">"score"</span>])     <span class="cmt"># 150</span>
+print(player[<span class="str">"items"</span>][<span class="num">0</span>])    <span class="cmt"># "sword"</span></pre>
+</div>
+
+</div>
+</div>
+</body>
+</html>

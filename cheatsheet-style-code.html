@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Code — Cheatsheet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0f1117;color:#e2e8f0;padding:20px}
+.container{max-width:1100px;margin:0 auto}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #2d3748;border-radius:12px;margin-bottom:14px}
+.header h1{font-size:22px;font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header span{font-size:11px;color:#64748b}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#1a1d2e;border:1px solid #2d3748;border-radius:12px;padding:14px 16px}
+.card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #2d3748;display:flex;align-items:center;gap:8px}
+.card-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.card.naming .card-title{color:#f472b6}.card.naming .card-title .dot{background:#f472b6}.card.naming{border-left:3px solid #f472b6}
+.card.spacing .card-title{color:#34d399}.card.spacing .card-title .dot{background:#34d399}.card.spacing{border-left:3px solid #34d399}
+.card.struct .card-title{color:#fbbf24}.card.struct .card-title .dot{background:#fbbf24}.card.struct{border-left:3px solid #fbbf24}
+.card.class .card-title{color:#60a5fa}.card.class .card-title .dot{background:#60a5fa}.card.class{border-left:3px solid #60a5fa}
+.card.comments .card-title{color:#a78bfa}.card.comments .card-title .dot{background:#a78bfa}.card.comments{border-left:3px solid #a78bfa}
+.card.imports .card-title{color:#fb923c}.card.imports .card-title .dot{background:#fb923c}.card.imports{border-left:3px solid #fb923c}
+.card.principles .card-title{color:#f87171}.card.principles .card-title .dot{background:#f87171}.card.principles{border-left:3px solid #f87171}
+.card.checks .card-title{color:#2dd4bf}.card.checks .card-title .dot{background:#2dd4bf}.card.checks{border-left:3px solid #2dd4bf}
+table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
+th,td{padding:5px 10px;text-align:left;border:1px solid #2d3748}
+th{background:#1e293b;font-weight:600;color:#94a3b8;font-size:10px;text-transform:uppercase}
+td{color:#cbd5e1}td code{font-size:11px}tr:nth-child(even) td{background:#161928}
+pre{background:#0d1117;border:1px solid #252d3d;border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;overflow-x:auto;margin:6px 0}
+.cmt{color:#5a6577;font-style:italic}.kw{color:#c678dd}.fn{color:#61afef}.cls{color:#e5c07b}.str{color:#98c379}.num{color:#d19a66}.var{color:#e06c75}.builtin{color:#56b6c2}
+p{font-size:11px;color:#94a3b8;margin:4px 0;line-height:1.5}
+.badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px}
+.badge-ok{background:#065f4622;color:#34d399;border:1px solid #34d39944}
+.badge-nope{background:#7f1d1d22;color:#f87171;border:1px solid #f8717144}
+.badge-info{background:#1e3a5f22;color:#60a5fa;border:1px solid #60a5fa44}
+.full-width{grid-column:1/-1}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:3px 16px}
+.checklist label{display:flex;align-items:center;gap:6px;font-size:11px;color:#94a3b8;padding:2px 0;cursor:pointer}
+.checklist input[type="checkbox"]{accent-color:#60a5fa;width:14px;height:14px}
+@media(max-width:750px){.grid{grid-template-columns:1fr}body{padding:12px}}
+@media print{body{background:#0f1117;padding:0}.header,.card{break-inside:avoid}@page{margin:10mm}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>PYTHON STYLE — CHEATSHEET</h1><span>Projet IHM • Conventions • 2026</span></div>
+<div class="grid">
+
+<div class="card naming">
+<div class="card-title"><span class="dot"></span>Nommage</div>
+<table><tr><th>Type</th><th>Convention</th><th>Exemple</th></tr>
+<tr><td>Fonctions</td><td>snake_case</td><td><code>create_team()</code></td></tr>
+<tr><td>Variables</td><td>snake_case</td><td><code>available_characters</code></td></tr>
+<tr><td>Classes</td><td>PascalCase</td><td><code>Character</code>, <code>Monster</code></td></tr>
+<tr><td>Fichiers</td><td>snake_case</td><td><code>game.py</code>, <code>main.py</code></td></tr>
+</table>
+<pre><span class="cmt"># Correct</span>
+<span class="kw">def</span> <span class="fn">team_is_not_full</span>(team):
+    <span class="kw">return</span> <span class="builtin">len</span>(team) &lt; <span class="num">3</span>
+
+<span class="cmt"># Incorrect</span>
+<span class="kw">def</span> teamIsFull(team):       <span class="cmt"># camelCase ❌</span>
+    <span class="kw">return</span> len(team) &gt;= <span class="num">3</span></pre>
+</div>
+
+<div class="card spacing">
+<div class="card-title"><span class="dot"></span>Espacement</div>
+<p><span class="badge badge-ok">2 lignes vides</span> entre fonctions de premier niveau</p>
+<p><span class="badge badge-ok">1 ligne vide</span> dans les fonctions pour séparer la logique</p>
+<pre><span class="kw">def</span> <span class="fn">create_team</span>(db, username):
+    team = []
+    available = get_characters(db)
+
+    <span class="kw">while</span> team_is_not_full(team):
+        character = ask_choice(available)
+        add_character(character, team)
+
+    <span class="kw">return</span> team
+
+
+<span class="kw">def</span> <span class="fn">next_function</span>():      <span class="cmt"># 2 lignes vides avant ⬆</span>
+    <span class="kw">pass</span></pre>
+<p><span class="badge badge-ok">Espaces autour des opérateurs</span></p>
+<pre><span class="builtin">len</span>(team) &lt; <span class="num">3</span>            <span class="cmt"># OK</span>
+<span class="incorrect" style="text-decoration:line-through;color:#f87171;opacity:.7">len(team)&lt;3</span>             <span class="cmt"># ❌</span></pre>
+</div>
+
+<div class="card comments">
+<div class="card-title"><span class="dot"></span>Commentaires</div>
+<p><span class="badge badge-ok">Triples guillemets</span> pour les sections</p>
+<p><span class="badge badge-ok">Français</span> pour commentaires et messages</p>
+<pre><span class="cmt">"""Création de l'équipe"""</span>
+
+<span class="kw">def</span> <span class="fn">create_team</span>(db, username):
+    <span class="cmt"># Récupère les personnages</span>
+    available = get_characters(db)
+    <span class="kw">return</span> team
+
+
+<span class="cmt">"""Combat"""</span>
+
+<span class="kw">def</span> <span class="fn">launch_fight</span>(db, team, mult, username):
+    <span class="kw">pass</span></pre>
+<p><span class="badge badge-nope">Pas de docstrings PEP 257</span></p>
+</div>
+
+<div class="card imports">
+<div class="card-title"><span class="dot"></span>Imports</div>
+<p>Ordre : <span class="badge badge-ok">stdlib</span> → <span class="badge badge-ok">tierces</span> → <span class="badge badge-ok">locaux</span></p>
+<pre><span class="kw">import</span> random
+<span class="kw">import</span> time
+<span class="kw">from</span> pymongo <span class="kw">import</span> MongoClient
+<span class="kw">from</span> models <span class="kw">import</span> <span class="op">*</span>
+<span class="kw">from</span> utils <span class="kw">import</span> <span class="op">*</span></pre>
+<p><span class="badge badge-ok">from X import *</span> autorisé pour les modules locaux</p>
+</div>
+
+<div class="card struct">
+<div class="card-title"><span class="dot"></span>Organisation des fichiers</div>
+<table><tr><th>Fichier</th><th>Rôle</th><th>Contenu</th></tr>
+<tr><td><code>models.py</code></td><td>Données</td><td><code>Character</code>, <code>Monster</code>, <code>Stack</code></td></tr>
+<tr><td><code>utils.py</code></td><td>Utilitaires</td><td>DB, affichage, saisies</td></tr>
+<tr><td><code>game.py</code></td><td>Mécaniques</td><td>Combat, monstres, effets</td></tr>
+<tr><td><code>main.py</code></td><td>Orchestration</td><td>Boucle de jeu, menu</td></tr>
+</table>
+<pre><span class="cmt"># Structure main.py</span>
+<span class="kw">import</span> time
+<span class="kw">from</span> utils <span class="kw">import</span> <span class="op">*</span>
+<span class="kw">from</span> game <span class="kw">import</span> <span class="op">*</span>
+
+
+<span class="cmt">"""Création de l'équipe"""</span>
+
+<span class="kw">def</span> <span class="fn">create_team</span>(db, username):
+    ...
+    <span class="kw">return</span> team, multiplier
+
+
+<span class="cmt">"""Combat"""</span>
+
+<span class="kw">def</span> <span class="fn">launch_fight</span>(db, team, mult, username):
+    <span class="kw">pass</span></pre>
+</div>
+
+<div class="card class">
+<div class="card-title"><span class="dot"></span>Classes</div>
+<pre><span class="kw">class</span> <span class="cls">Character</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, defense, atk, name, max_pv):
+        self.defense = defense
+        self.atk = atk
+        self.name = name
+        self.max_pv = max_pv
+        self.current_pv = max_pv
+        self.effets = Stack()
+
+    <span class="kw">def</span> <span class="fn">attack</span>(self, cible):
+        dmg = self.atk - cible.defense
+        cible.current_pv -= dmg <span class="kw">if</span> dmg &gt; <span class="num">0</span> <span class="kw">else</span> <span class="num">1</span>
+
+    <span class="kw">def</span> <span class="fn">is_dead</span>(self):
+        <span class="kw">return</span> self.current_pv &lt;= <span class="num">0</span></pre>
+<p><span class="badge badge-ok">Méthodes</span> dans la classe</p>
+<p><span class="badge badge-info">Fonctions</span> séparées pour l'orchestration</p>
+</div>
+
+<div class="card class">
+<div class="card-title"><span class="dot"></span>Stack maison</div>
+<pre><span class="kw">class</span> <span class="cls">Stack</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self):
+        self.stack = []
+
+    <span class="kw">def</span> <span class="fn">empiler</span>(self, valeur):   <span class="cmt"># push</span>
+        self.stack.append(valeur)
+
+    <span class="kw">def</span> <span class="fn">depiler</span>(self):           <span class="cmt"># pop</span>
+        <span class="kw">return</span> self.stack.pop()
+
+    <span class="kw">def</span> <span class="fn">is_empty</span>(self):
+        <span class="kw">return</span> <span class="builtin">len</span>(self.stack) == <span class="num">0</span></pre>
+<p>Méthodes en français (<code>empiler</code>, <code>depiler</code>)</p>
+</div>
+
+<div class="card principles">
+<div class="card-title"><span class="dot"></span>Principes généraux</div>
+<ul style="list-style:none;padding:0;margin:4px 0">
+<li style="font-size:11px;color:#cbd5e1;padding:3px 0 3px 14px;position:relative"><strong>Une fonction = une responsabilité</strong></li>
+<li style="font-size:11px;color:#cbd5e1;padding:3px 0 3px 14px;position:relative"><strong>Paramètres explicites</strong> — pas de globales</li>
+<li style="font-size:11px;color:#cbd5e1;padding:3px 0 3px 14px;position:relative"><strong>Early return</strong> — éviter les indentations profondes</li>
+<li style="font-size:11px;color:#cbd5e1;padding:3px 0 3px 14px;position:relative"><strong>Dictionnaire</strong> pour les menus</li>
+<li style="font-size:11px;color:#cbd5e1;padding:3px 0 3px 14px;position:relative"><strong>while</strong> pour les validations de saisie</li>
+<li style="font-size:11px;color:#cbd5e1;padding:3px 0 3px 14px;position:relative">Conditions explicites</li>
+</ul>
+<pre><span class="cmt"># Early return</span>
+<span class="kw">def</span> <span class="fn">team_is_dead</span>(team):
+    <span class="kw">for</span> c <span class="kw">in</span> team:
+        <span class="kw">if</span> <span class="kw">not</span> c.is_dead():
+            <span class="kw">return</span> <span class="var">False</span>
+    <span class="kw">return</span> <span class="var">True</span>
+
+<span class="cmt"># Menu avec dictionnaire</span>
+<span class="kw">def</span> <span class="fn">principal_menu</span>():
+    choices = {
+        <span class="str">"1"</span>: play_game,
+        <span class="str">"2"</span>: display_scoreboard,
+        <span class="str">"3"</span>: <span class="kw">lambda</span> _: exit(),
+    }
+    choices[ask_choices()](db)</pre>
+</div>
+
+<div class="card checks full-width">
+<div class="card-title"><span class="dot"></span>Checklist</div>
+<div class="checklist">
+<label><input type="checkbox"> snake_case fonctions/variables</label>
+<label><input type="checkbox"> PascalCase classes</label>
+<label><input type="checkbox"> 2 lignes vides entre fonctions</label>
+<label><input type="checkbox"> 1 ligne vide dans les fonctions</label>
+<label><input type="checkbox"> Opérateurs avec espaces</label>
+<label><input type="checkbox"> Sections en """..."""</label>
+<label><input type="checkbox"> Imports dans l'ordre</label>
+<label><input type="checkbox"> Commentaires en français</label>
+<label><input type="checkbox"> Une fonction = une tâche</label>
+<label><input type="checkbox"> Paramètres explicites</label>
+<label><input type="checkbox"> Early return</label>
+<label><input type="checkbox"> Un fichier = un rôle</label>
+<label><input type="checkbox"> Dict pour les menus</label>
+<label><input type="checkbox"> while pour les saisies</label>
+</div>
+</div>
+
+</div>
+</div>
+</body>
+</html>
