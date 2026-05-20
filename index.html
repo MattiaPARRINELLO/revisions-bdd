@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Révisions BDD</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0c14;color:#e2e8f0;padding:0;min-height:100dvh}
+
+.container{max-width:600px;margin:0 auto;padding:16px 14px 80px}
+
+/* HEADER */
+.hero{background:linear-gradient(135deg,#0f172a,#1a1d2e);border:1px solid #2d3748;border-radius:16px;padding:24px 20px;margin-bottom:16px;text-align:center}
+.hero h1{font-size:26px;font-weight:800;background:linear-gradient(135deg,#34d399,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.hero p{font-size:13px;color:#64748b}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;background:#1e293b;color:#94a3b8;padding:6px 14px;border-radius:20px;border:1px solid #2d3748}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.stat{background:#1a1d2e;border:1px solid #2d3748;border-radius:12px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:800;color:#34d399}
+.stat-label{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.stat.progress .stat-num{font-size:18px}
+
+/* SECTION TITLES + TOGGLES */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin:20px 0 10px;padding-bottom:8px;border-bottom:2px solid #1e293b}
+.section-header h2{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.section-header .count{font-size:11px;color:#64748b;font-weight:400}
+.toggle-all{font-size:11px;color:#64748b;background:0;border:1px solid #2d3748;border-radius:6px;padding:4px 10px;cursor:pointer;transition:.15s}
+.toggle-all:active{background:#1e293b}
+.section-header .badge-s{font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase}
+.badge-s.style{background:#065f4622;color:#34d399;border:1px solid #34d39944}
+.badge-s.bdd{background:#1e3a5f22;color:#60a5fa;border:1px solid #60a5fa44}
+
+/* CARDS */
+.card{background:#1a1d2e;border:1px solid #2d3748;border-radius:12px;margin-bottom:8px;overflow:hidden;transition:.15s}
+.card:active{transform:scale(.98)}
+
+.card-header{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.card-header .num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.card.style .num{background:#065f4622;color:#34d399;border:1px solid #34d39933}
+.card.bdd .num{background:#1e3a5f22;color:#60a5fa;border:1px solid #60a5fa33}
+.card-header .title{flex:1;font-size:13px;font-weight:600;line-height:1.3}
+.card-header .title small{font-weight:400;color:#64748b;display:block;font-size:11px;margin-top:1px}
+.card-header .check{width:22px;height:22px;border-radius:6px;border:2px solid #2d3748;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.15s;flex-shrink:0}
+.card-header .check.done{background:#34d399;border-color:#34d399;color:#0f1117}
+.card-body{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.card-body.open{max-height:200px}
+.card-inner{padding:0 14px 14px 66px;display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-size:12px;font-weight:600;padding:8px 16px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.15s;border:none;cursor:pointer;background:#0f1117;color:#e2e8f0;border:1px solid #2d3748;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.96)}
+.btn-green{background:#065f4622;color:#34d399;border-color:#34d39933}
+.btn-blue{background:#1e3a5f22;color:#60a5fa;border-color:#60a5fa33}
+.btn-yellow{background:#5c4a1a33;color:#fbbf24;border-color:#fbbf2433}
+
+/* CHEATSHEET BUTTONS */
+.cheatsheets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.cheat-btn{display:block;background:#1a1d2e;border:1px solid #2d3748;border-radius:14px;padding:18px 16px;text-decoration:none;color:#e2e8f0;transition:.15s}
+.cheat-btn:active{transform:scale(.97)}
+.cheat-btn .icon{font-size:24px;margin-bottom:6px}
+.cheat-btn .name{font-size:13px;font-weight:700}
+.cheat-btn .desc{font-size:10px;color:#64748b;margin-top:2px}
+.cheat-btn.style{border-left:3px solid #34d399}
+.cheat-btn.bdd{border-left:3px solid #60a5fa}
+
+/* FLOATING BOTTOM BAR */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,#0a0c1400,#0a0c14 30%);padding:20px 14px 14px;pointer-events:none;z-index:10}
+.bottom-bar-inner{max-width:600px;margin:0 auto;display:flex;gap:8px;pointer-events:auto}
+.bottom-bar .btn{flex:1;justify-content:center;padding:12px;font-size:13px}
+.reset-btn{background:#2d1b1b33;color:#f87171;border-color:#f8717133}
+
+/* TOGGLE DIFFICULTY FILTER */
+.filter-bar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.filter-btn{font-size:10px;padding:5px 12px;border-radius:20px;border:1px solid #2d3748;background:0;color:#64748b;cursor:pointer;transition:.15s}
+.filter-btn.active{background:#1e293b;color:#e2e8f0;border-color:#475569}
+
+/* RESPONSIVE */
+@media(min-width:600px){.container{padding:20px}}
+@media(max-width:380px){.cheatsheets{grid-template-columns:1fr}.hero h1{font-size:22px}}
+
+/* PRINT */
+@media print{body{background:#fff;color:#000}.bottom-bar,.filter-bar,.toggle-all{display:none!important}.card-body{max-height:none!important}.card{break-inside:avoid}.hero{background:#f8fafc;border-color:#e2e8f0}.hero h1{-webkit-text-fill-color:#0f172a;background:0;color:#0f172a}}
+</style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Révisions BDD</h1>
+    <p>Python &bull; MongoDB &bull; PyMongo</p>
+    <div class="badge">30 exercices &middot; examen sur papier</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="statTotal">30</div><div class="stat-label">Exercices</div></div>
+    <div class="stat progress"><div class="stat-num" id="statDone">0</div><div class="stat-label">Fait</div></div>
+    <div class="stat"><div class="stat-num" id="statPct">0%</div><div class="stat-label">Progression</div></div>
+  </div>
+
+  <!-- CHEATSHEETS -->
+  <div class="section-header"><h2>📄 Fiches de révision</h2></div>
+  <div class="cheatsheets">
+    <a class="cheat-btn style" href="cheatsheet-style-code.html">
+      <div class="icon">🎨</div>
+      <div class="name">Style de code</div>
+      <div class="desc">Nommage, sections, imports, classes...</div>
+    </a>
+    <a class="cheat-btn bdd" href="cheatsheet-bdd.html">
+      <div class="icon">🗄️</div>
+      <div class="name">MongoDB / PyMongo</div>
+      <div class="desc">CRUD, sort, projection, opérateurs...</div>
+    </a>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">Tous</button>
+    <button class="filter-btn" data-filter="style">Style de code</button>
+    <button class="filter-btn" data-filter="bdd">BDD</button>
+    <button class="filter-btn" data-filter="todo">À faire</button>
+    <button class="filter-btn" data-filter="done">Faits</button>
+  </div>
+
+  <!-- SECTION STYLE -->
+  <div class="section-header" id="section-style">
+    <h2>🎨 Style de code <span class="badge-s style">15 exos</span></h2>
+    <button class="toggle-all" data-section="style">Tout ouvrir</button>
+  </div>
+  <div id="exercises-style"></div>
+
+  <!-- SECTION BDD -->
+  <div class="section-header" id="section-bdd">
+    <h2>🗄️ BDD / MongoDB <span class="badge-s bdd">15 exos</span></h2>
+    <button class="toggle-all" data-section="bdd">Tout ouvrir</button>
+  </div>
+  <div id="exercises-bdd"></div>
+
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div class="bottom-bar-inner">
+    <button class="btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆ Haut</button>
+    <button class="btn reset-btn" onclick="if(confirm('Réinitialiser la progression ?')){localStorage.removeItem('revisionsDone');render()}">↺ Reset</button>
+  </div>
+</div>
+
+<script>
+const EXERCISES = [
+  // STYLE DE CODE (01-15)
+  {id:1, section:'style', title:'Nommage', desc:'Variables, fonctions, constantes en snake_case'},
+  {id:2, section:'style', title:'Espacement', desc:'Opérateurs, virgules, parenthèses'},
+  {id:3, section:'style', title:'Sections dans les fonctions', desc:'docstring, corps, return'},
+  {id:4, section:'style', title:'Classes', desc:'Nommage PascalCase, méthode, constructeur'},
+  {id:5, section:'style', title:'Imports', desc:'Ordre : builtins, tiers, locales'},
+  {id:6, section:'style', title:'Structure des fichiers', desc:'Organisation d\'un .py complet'},
+  {id:7, section:'style', title:'Principes', desc:'DRY, KISS, lisibilité'},
+  {id:8, section:'style', title:'Correction de code', desc:'Trouver et corriger les erreurs de style'},
+  {id:9, section:'style', title:'Écrire des fonctions', desc:'Clean functions avec docstrings'},
+  {id:10, section:'style', title:'Menu complet', desc:'Menu avec dictionnaire et lambda'},
+  {id:11, section:'style', title:'Stack avec classe', desc:'Pile LIFO en POO'},
+  {id:12, section:'style', title:'Boucle while saisie', desc:'Validation de saisie utilisateur'},
+  {id:13, section:'style', title:'Lire du code', desc:'Comprendre et analyser du code existant'},
+  {id:14, section:'style', title:'Refactoring', desc:'Nettoyer et améliorer du code'},
+  {id:15, section:'style', title:'Exercice libre', desc:'Tout ce qu\'on a vu, sans filet'},
+
+  // BDD (16-30)
+  {id:16, section:'bdd', title:'Connexion', desc:'Connecter Python à MongoDB'},
+  {id:17, section:'bdd', title:'Insert', desc:'insert_one, insert_many'},
+  {id:18, section:'bdd', title:'Find One', desc:'find_one avec filtres'},
+  {id:19, section:'bdd', title:'Find', desc:'find, boucle sur curseur'},
+  {id:20, section:'bdd', title:'Update', desc:'update_one, update_many, $set'},
+  {id:21, section:'bdd', title:'Delete', desc:'delete_one, delete_many'},
+  {id:22, section:'bdd', title:'Sort & Limit', desc:'Trier et limiter les résultats'},
+  {id:23, section:'bdd', title:'Opérateurs', desc:'$gt, $lt, $in, $regex'},
+  {id:24, section:'bdd', title:'Projection', desc:'Choisir les champs retournés'},
+  {id:25, section:'bdd', title:'Mini-app complète', desc:'CRUD complet dans un menu'},
+  {id:26, section:'bdd', title:'Lire du code', desc:'Comprendre un script MongoDB'},
+  {id:27, section:'bdd', title:'Student manager', desc:'Gérer des étudiants en BDD'},
+  {id:28, section:'bdd', title:'Blog', desc:'Posts, commentaires, likes'},
+  {id:29, section:'bdd', title:'Music player', desc:'Playlist, chansons, lecture'},
+  {id:30, section:'bdd', title:'Bilan', desc:'Exercice récapitulatif complet'},
+]
+
+function zero(n){return String(n).padStart(2,'0')}
+
+function exLink(n){return `exercices/${zero(n)}-${EXERCISES[n-1].title.toLowerCase().replace(/\s+/g,'-')}.md`}
+function corrLink(n){return `exercices/corrections/${zero(n)}-${EXERCISES[n-1].title.toLowerCase().replace(/\s+/g,'-')}.md`}
+
+function getDone(){try{return JSON.parse(localStorage.getItem('revisionsDone')||'{}')}catch(e){return{}}}
+function setDone(id,val){const d=getDone();if(val)d[id]=true;else delete d[id];localStorage.setItem('revisionsDone',JSON.stringify(d));render()}
+function toggleAll(section,open){const d=getDone();document.querySelectorAll(`#exercises-${section} .card`).forEach(c=>{c.querySelector('.card-body').classList.toggle('open',open)})}
+
+function render(){
+  const d=getDone(), doneIds=Object.keys(d).filter(k=>d[k]).map(Number)
+  const total=EXERCISES.length, done=doneIds.length, pct=Math.round(done/total*100)
+  document.getElementById('statTotal').textContent=total
+  document.getElementById('statDone').textContent=done
+  document.getElementById('statPct').textContent=pct+'%'
+
+  const filter=document.querySelector('.filter-btn.active')?.dataset?.filter||'all'
+  const filtered=EXERCISES.filter(e=>{
+    if(filter==='all')return true
+    if(filter==='style')return e.section==='style'
+    if(filter==='bdd')return e.section==='bdd'
+    if(filter==='todo')return !d[e.id]
+    if(filter==='done')return d[e.id]
+    return true
+  })
+  const filteredIds=new Set(filtered.map(e=>e.id))
+
+  ;['style','bdd'].forEach(section=>{
+    const container=document.getElementById(`exercises-${section}`)
+    const exos=EXERCISES.filter(e=>e.section===section)
+    container.innerHTML=exos.map(e=>{
+      const isDone=!!d[e.id]
+      const visible=filteredIds.has(e.id)
+      return `<div class="card ${e.section}" style="${visible?'':'display:none'}">
+        <div class="card-header" onclick="this.nextElementSibling.classList.toggle('open')">
+          <div class="num">${zero(e.id)}</div>
+          <div class="title">${e.title}<small>${e.desc}</small></div>
+          <div class="check ${isDone?'done':''}" onclick="event.stopPropagation();setDone(${e.id},${!isDone})">${isDone?'✓':''}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-inner">
+            <a class="btn btn-green" href="${exLink(e.id)}" target="_blank">📝 Énoncé</a>
+            <a class="btn btn-yellow" href="${corrLink(e.id)}" target="_blank">🔑 Correction</a>
+          </div>
+        </div>
+      </div>`
+    }).join('')
+  })
+}
+
+// FILTER CLICKS
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'))
+    this.classList.add('active')
+    render()
+  })
+})
+
+// TOGGLE ALL
+document.querySelectorAll('.toggle-all').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const section=this.dataset.section
+    const allOpen=[...document.querySelectorAll(`#exercises-${section} .card-body`)].every(b=>b.classList.contains('open'))
+    toggleAll(section,!allOpen)
+    this.textContent=allOpen?'Tout ouvrir':'Tout fermer'
+  })
+})
+
+render()
+</script>
+</body>
+</html>

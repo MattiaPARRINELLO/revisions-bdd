@@ -4,6 +4,8 @@ Révisions pour l'examen de base de données (1h, sur papier, sans internet).
 
 **Python + MongoDB + PyMongo** — basé sur le projet jeu de Benjamin.
 
+🌐 **Page principale :** [ouvrir index.html](index.html) (ouvre avec ton navigateur, ideal sur tel)
+
 ---
 
 ## 📂 Contenu
